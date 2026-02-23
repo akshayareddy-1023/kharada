@@ -1,0 +1,6 @@
+torch
+pandas
+sentencepiece
+sacrebleu
+scikit-learn
+tqdm
