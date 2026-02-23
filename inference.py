@@ -1,46 +1,84 @@
-import os
+import torch
 import sentencepiece as spm
+from model.transformer import KharadaTransformer
+import warnings
+
+warnings.filterwarnings("ignore")
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Load tokenizer
+sp = spm.SentencePieceProcessor()
+sp.load("tokenizer/bpe.model")
+
+vocab_size = sp.get_piece_size()
+pad_id = sp.pad_id()
+bos_id = sp.bos_id()
+eos_id = sp.eos_id()
+
+# Load model
+model = KharadaTransformer(vocab_size=vocab_size).to(device)
+model.load_state_dict(torch.load("model/best_model.pt", map_location=device))
+model.eval()
+
+print("Model loaded. Ready for translation.\n")
 
 
-def train_tokenizer(
-    input_file="data/dataset.txt",
-    model_prefix="tokenizer/bpe",
-    vocab_size=800,
-    character_coverage=1.0
-):
-    """
-    Trains a SentencePiece BPE tokenizer.
-    
-    Args:
-        input_file (str): Path to training text file
-        model_prefix (str): Output prefix for tokenizer files
-        vocab_size (int): Vocabulary size
-        character_coverage (float): 1.0 for full unicode coverage
-    """
+def translate(sentence, max_len=40):
 
-    # Create tokenizer directory if not exists
-    os.makedirs(os.path.dirname(model_prefix), exist_ok=True)
+    src_ids = [bos_id] + sp.encode(sentence, out_type=int) + [eos_id]
+    src_tensor = torch.tensor(src_ids).unsqueeze(0).to(device)
 
-    spm.SentencePieceTrainer.train(
-        input=input_file,
-        model_prefix=model_prefix,
-        vocab_size=vocab_size,
-        model_type="bpe",
-        character_coverage=character_coverage,
-        pad_id=0,
-        bos_id=1,
-        eos_id=2,
-        unk_id=3,
-        pad_piece="<pad>",
-        bos_piece="<s>",
-        eos_piece="</s>",
-        unk_piece="<unk>"
-    )
+    tgt_ids = [bos_id]
 
-    print("✅ Tokenizer training completed!")
-    print(f"Model saved as: {model_prefix}.model")
-    print(f"Vocab saved as: {model_prefix}.vocab")
+    for step in range(max_len):
+
+        tgt_tensor = torch.tensor(tgt_ids).unsqueeze(0).to(device)
+
+        with torch.no_grad():
+            output = model(src_tensor, tgt_tensor, pad_id)
+
+        logits = output[:, -1, :]
+
+        # Greedy decoding
+        next_token = torch.argmax(logits, dim=-1).item()
+
+        # Prevent immediate EOS at first step
+        if step == 0 and next_token == eos_id:
+            top2 = torch.topk(logits, 2).indices[0]
+            next_token = top2[1].item()
+
+        # Prevent repetition
+        if len(tgt_ids) > 2 and next_token == tgt_ids[-1]:
+            top2 = torch.topk(logits, 2).indices[0]
+            next_token = top2[1].item()
+
+        tgt_ids.append(next_token)
+
+        if next_token == eos_id:
+            break
+
+    # Remove BOS
+    output_ids = tgt_ids[1:]
+
+    # Remove EOS if present
+    if eos_id in output_ids:
+        output_ids = output_ids[:output_ids.index(eos_id)]
+
+    if len(output_ids) == 0:
+        return "[Model unsure — try similar sentence from training data]"
+
+    return sp.decode(output_ids)
 
 
-if __name__ == "__main__":
-    train_tokenizer()
+# -------- INTERACTIVE LOOP --------
+while True:
+
+    text = input("Enter Kharada sentence (or type exit): ")
+
+    if text.lower() == "exit":
+        break
+
+    translation = translate(text)
+    print("English Translation:", translation)
+    print()

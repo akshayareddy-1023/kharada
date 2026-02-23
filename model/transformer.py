@@ -4,22 +4,18 @@ import math
 
 
 class KharadaTransformer(nn.Module):
-    def __init__(self, vocab_size, d_model=128, nhead=4,
-                 num_encoder_layers=2, num_decoder_layers=2,
+    def __init__(self, vocab_size, d_model=256, nhead=4,
+                 num_encoder_layers=3, num_decoder_layers=3,
                  dim_feedforward=256, dropout=0.1):
 
         super().__init__()
-
         self.d_model = d_model
 
-        # Embeddings
         self.embedding = nn.Embedding(vocab_size, d_model)
 
-        # Positional Encoding
         self.pos_encoder = PositionalEncoding(d_model, dropout)
         self.pos_decoder = PositionalEncoding(d_model, dropout)
 
-        # Transformer
         self.transformer = nn.Transformer(
             d_model=d_model,
             nhead=nhead,
@@ -30,31 +26,35 @@ class KharadaTransformer(nn.Module):
             batch_first=True
         )
 
-        # Final Linear
         self.fc_out = nn.Linear(d_model, vocab_size)
 
-    def forward(self, src, tgt):
+    def forward(self, src, tgt, pad_id):
+
         src_emb = self.embedding(src) * math.sqrt(self.d_model)
         tgt_emb = self.embedding(tgt) * math.sqrt(self.d_model)
 
         src_emb = self.pos_encoder(src_emb)
         tgt_emb = self.pos_decoder(tgt_emb)
 
-        tgt_mask = self.generate_square_subsequent_mask(tgt.size(1)).to(tgt.device)
+        # Padding masks
+        src_padding_mask = (src == pad_id)
+        tgt_padding_mask = (tgt == pad_id)
+
+        # ✅ CORRECT causal mask
+        tgt_mask = nn.Transformer.generate_square_subsequent_mask(
+            tgt.size(1)
+        ).to(tgt.device)
 
         output = self.transformer(
             src_emb,
             tgt_emb,
-            tgt_mask=tgt_mask
+            tgt_mask=tgt_mask,
+            src_key_padding_mask=src_padding_mask,
+            tgt_key_padding_mask=tgt_padding_mask,
+            memory_key_padding_mask=src_padding_mask
         )
 
         return self.fc_out(output)
-
-    def generate_square_subsequent_mask(self, sz):
-        mask = torch.triu(torch.ones(sz, sz)) == 1
-        mask = mask.transpose(0, 1)
-        mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
-        return mask
 
 
 class PositionalEncoding(nn.Module):
@@ -63,11 +63,11 @@ class PositionalEncoding(nn.Module):
         self.dropout = nn.Dropout(p=dropout)
 
         pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
+        position = torch.arange(0, max_len).unsqueeze(1).float()
 
         div_term = torch.exp(
-            torch.arange(0, d_model, 2).float() *
-            (-math.log(10000.0) / d_model)
+            torch.arange(0, d_model, 2).float()
+            * (-math.log(10000.0) / d_model)
         )
 
         pe[:, 0::2] = torch.sin(position * div_term)
