@@ -4,9 +4,9 @@ import math
 
 
 class KharadaTransformer(nn.Module):
-    def __init__(self, vocab_size, d_model=256, nhead=4,
-                 num_encoder_layers=3, num_decoder_layers=3,
-                 dim_feedforward=256, dropout=0.1):
+    def __init__(self, vocab_size, d_model=128, nhead=4,
+                 num_encoder_layers=2, num_decoder_layers=2,
+                 dim_feedforward=256, dropout=0.2):
 
         super().__init__()
         self.d_model = d_model
@@ -36,11 +36,10 @@ class KharadaTransformer(nn.Module):
         src_emb = self.pos_encoder(src_emb)
         tgt_emb = self.pos_decoder(tgt_emb)
 
-        # Padding masks
+        # Masks
         src_padding_mask = (src == pad_id)
         tgt_padding_mask = (tgt == pad_id)
 
-        # ✅ CORRECT causal mask
         tgt_mask = nn.Transformer.generate_square_subsequent_mask(
             tgt.size(1)
         ).to(tgt.device)
