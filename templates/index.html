@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}
+Kharada Translator
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+    <h1>
+        Kharada To English Translator
+    </h1>
+
+
+    <p>
+        Translate Kharada language into English using an intelligent AI-based translation system.
+    </p>
+
+</section>
+
+
+
+<!-- TRANSLATOR CARD -->
+
+<div class="translator-card">
+
+
+    <div class="language-bar">
+
+        <span>
+            <i class="fa-solid fa-language"></i>
+            Kharada
+        </span>
+
+
+        <span class="swap" onclick="swapLanguage()">
+
+            <i class="fa-solid fa-right-left"></i>
+
+        </span>
+
+
+        <span>
+            English
+        </span>
+
+
+    </div>
+
+
+
+
+    <form action="{{ url_for('home') }}" method="POST">
+
+
+
+        <div class="translator-grid">
+
+
+            <!-- INPUT PANEL -->
+
+            <div class="panel">
+
+
+                <textarea 
+                name="inputText"
+                id="inputText"
+                maxlength="1000"
+                placeholder="Enter Kharada text here..."
+                required>{{ request.form.get('inputText','') }}</textarea>
+
+
+
+                <div class="panel-footer">
+
+
+                    <span id="charCount">
+                        0 / 1000
+                    </span>
+
+
+
+                    <button type="button"
+                    class="tool-btn"
+                    onclick="clearInput()">
+
+                        <i class="fa-solid fa-trash"></i>
+                        Clear
+
+                    </button>
+
+
+
+                    <button type="button"
+                    class="tool-btn"
+                    onclick="startListening()">
+
+                        <i class="fa-solid fa-microphone"></i>
+                        Voice
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+            <!-- OUTPUT PANEL -->
+
+
+            <div class="panel">
+
+
+                <textarea
+                id="outputText"
+                readonly
+                placeholder="English translation will appear here...">{{ translation if translation else '' }}</textarea>
+
+
+
+
+                <div class="panel-footer">
+
+
+                    <span>
+                        Result
+                    </span>
+
+
+
+                    <button type="button"
+                    class="copy-btn"
+                    onclick="copyText()">
+
+
+                        <i class="fa-solid fa-copy"></i>
+                        Copy
+
+
+                    </button>
+
+
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <!-- TRANSLATE BUTTON -->
+
+
+        <div class="translate-section">
+
+
+            <button 
+            type="submit"
+            id="translateBtn"
+            class="translate-btn">
+
+
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+                Translate
+
+
+            </button>
+
+
+        </div>
+
+
+
+    </form>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- FEATURES -->
+
+
+<section class="features">
+
+
+<div class="feature-card">
+
+
+    <i class="fa-solid fa-bolt"></i>
+
+    <h3>
+        Fast Translation
+    </h3>
+
+    <p>
+        Get quick and accurate language conversion.
+    </p>
+
+
+</div>
+
+
+
+
+<div class="feature-card">
+
+
+    <i class="fa-solid fa-microphone"></i>
+
+    <h3>
+        Voice Support
+    </h3>
+
+    <p>
+        Convert speech into text easily.
+    </p>
+
+
+</div>
+
+
+
+
+<div class="feature-card">
+
+
+    <i class="fa-solid fa-clock-rotate-left"></i>
+
+    <h3>
+        Translation History
+    </h3>
+
+    <p>
+        View your previous translations.
+    </p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+{% endblock %}

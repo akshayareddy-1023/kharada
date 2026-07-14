@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Register | Kharada Translator
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="auth-container">
+
+
+    <div class="auth-card">
+
+
+        <h2>
+
+            <i class="fa-solid fa-user-plus"></i>
+
+            Create Account
+
+        </h2>
+
+
+
+        <form action="{{ url_for('register') }}" method="POST">
+
+
+
+            <input 
+            type="text"
+            name="username"
+            placeholder="Enter Username"
+            required>
+
+
+
+            <input 
+            type="email"
+            name="email"
+            placeholder="Enter Email"
+            required>
+
+
+
+
+            <div style="position:relative;">
+
+
+                <input 
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create Password"
+                required>
+
+
+
+                <i 
+                class="fa-solid fa-eye"
+                id="eye"
+                onclick="togglePassword()"
+                style="
+                position:absolute;
+                right:15px;
+                top:15px;
+                cursor:pointer;
+                color:#64748B;">
+                </i>
+
+
+            </div>
+
+
+
+
+
+            <button 
+            type="submit"
+            class="auth-btn">
+
+
+                Register
+
+
+            </button>
+
+
+
+
+        </form>
+
+
+
+
+
+        <p style="text-align:center;margin-top:20px;">
+
+
+            Already have an account?
+
+
+            <a href="{{ url_for('login') }}">
+
+                Login
+
+            </a>
+
+
+        </p>
+
+
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}
