@@ -8,3 +8,11 @@ step 3: python train_tokenizer.py
 step 4: python train.py
 
 step 5: python inference.py
+
+
+
+
+
+step 1:Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+step 2: .\venv\Scripts\Activate.ps1  
+step 3:  python app.                                       
