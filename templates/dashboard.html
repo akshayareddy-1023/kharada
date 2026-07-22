@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Dashboard
+
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+<h1>
+
+Welcome,
+
+{{username}} 👋
+
+</h1>
+
+<p>
+
+AI Powered Kharada Language Translation System
+
+</p>
+
+<div class="cards">
+
+<div class="dashboard-card">
+
+<h2>
+
+👥
+
+</h2>
+
+<h3>
+
+{{total_users}}
+
+</h3>
+
+<p>
+
+Registered Users
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+
+📄
+
+</h2>
+
+<h3>
+
+{{total_translations}}
+
+</h3>
+
+<p>
+
+Translations
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+
+🏆
+
+</h2>
+
+<h3>
+
+Transformer
+
+</h3>
+
+<p>
+
+Best Model
+
+</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<h2>
+
+🕒
+
+</h2>
+
+<h3>
+
+{{last_login}}
+
+</h3>
+
+<p>
+
+Last Login
+
+</p>
+
+</div>
+
+</div>
+
+<div class="quick-actions">
+
+<h2>
+
+Quick Actions
+
+</h2>
+
+<div class="action-buttons">
+
+<a href="/translator">
+
+<button>
+
+Translate
+
+</button>
+
+</a>
+
+<a href="/history">
+
+<button>
+
+History
+
+</button>
+
+</a>
+
+<a href="/performance">
+
+<button>
+
+Performance
+
+</button>
+
+</a>
+
+<a href="/profile">
+
+<button>
+
+Profile
+
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+<div class="info-box">
+
+<h2>
+
+Project Features
+
+</h2>
+
+<ul>
+
+<li>✔ Transformer Translation</li>
+
+<li>✔ LSTM Translation</li>
+
+<li>✔ Translation History</li>
+
+<li>✔ Performance Graphs</li>
+
+<li>✔ User Login System</li>
+
+<li>✔ SQLite Database</li>
+
+</ul>
+
+</div>
+
+</div>
+
+{% endblock %}

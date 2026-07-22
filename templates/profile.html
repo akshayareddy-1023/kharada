@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+
+<div class="profile-container">
+
+    <div class="profile-card">
+
+        <div class="profile-icon">
+
+            <i class="fa-solid fa-user"></i>
+
+        </div>
+
+        <h2>{{ username }}</h2>
+
+        <p class="role">System User</p>
+
+        <hr>
+
+        <div class="profile-details">
+
+            <div class="detail-box">
+
+                <h3>Last Login</h3>
+
+                <p>{{ login_time }}</p>
+
+            </div>
+
+            <div class="detail-box">
+
+                <h3>Total Translations</h3>
+
+                <p>{{ count }}</p>
+
+            </div>
+
+        </div>
+
+        <a href="/translator">
+
+            <button>
+
+                Start Translating
+
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

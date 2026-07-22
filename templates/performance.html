@@ -1,0 +1,555 @@
+{% extends "base.html" %}
+
+{% block title %}Model Performance{% endblock %}
+
+{% block content %}
+
+<div class="performance-container">
+
+    <h1>AI Model Performance Dashboard</h1>
+
+    <p class="subtitle">
+        Comparison of Transformer and LSTM Models
+    </p>
+
+
+<!-- Paste the metric cards HERE -->
+
+<div class="metrics-grid">
+
+    <div class="metric-card">
+
+        <h4>Accuracy</h4>
+
+        <h2>{{ metrics["Transformer"]["Accuracy"] }}%</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+    <div class="metric-card">
+
+        <h4>Precision</h4>
+
+        <h2>{{ metrics["Transformer"]["Precision"]  }}%</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+    <div class="metric-card">
+
+        <h4>Recall</h4>
+
+        <h2>{{ metrics["Transformer"]["Recall"] }}%</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+    <div class="metric-card">
+
+        <h4>F1 Score</h4>
+
+        <h2>{{ metrics["Transformer"]["F1"] }}%</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+    <div class="metric-card">
+
+        <h4>BLEU Score</h4>
+
+        <h2>{{ metrics["Transformer"]["BLEU"] }}</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+</div>
+
+<!-- Your graphs come BELOW this -->   
+<!-- =======================
+MODEL METRICS CARDS
+======================= -->
+
+<div class="metrics-grid">
+
+    <div class="metric-card">
+
+        <h4>Accuracy</h4>
+
+        <h2>82%</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+    <div class="metric-card">
+
+        <h4>Precision</h4>
+
+        <h2>81%</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+    <div class="metric-card">
+
+        <h4>Recall</h4>
+
+        <h2>80%</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+    <div class="metric-card">
+
+        <h4>F1 Score</h4>
+
+        <h2>80%</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+    <div class="metric-card">
+
+        <h4>BLEU Score</h4>
+
+        <h2>4.04</h2>
+
+        <p>Transformer</p>
+
+    </div>
+
+</div>
+
+    <div class="winner-card">
+
+        <h2>🏆 Best Performing Model</h2>
+
+        <h3>Transformer</h3>
+
+        <p>
+            Higher Accuracy, Precision, Recall and BLEU Score
+        </p>
+
+    </div>
+
+    <div class="chart-grid">
+
+        <div class="chart-card">
+
+            <canvas id="accuracyChart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <canvas id="precisionChart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <canvas id="recallChart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <canvas id="f1Chart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <canvas id="bleuChart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <canvas id="radarChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const transformer=[82,81,80,80,4.04];
+
+const lstm=[75,74,73,73,2.80];
+
+new Chart(document.getElementById("accuracyChart"),{
+
+type:'bar',
+
+data:{
+
+labels:['Transformer','LSTM'],
+
+datasets:[{
+
+label:'Accuracy (%)',
+
+data:[82,75],
+
+backgroundColor:['#10b981','#34d399'],
+
+borderColor:['#059669','#10b981'],
+
+borderWidth:2,
+
+borderRadius:8
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+legend:{
+labels:{
+color:"#1f2937",
+font:{
+size:14,
+weight:"bold"
+}
+}
+}
+},
+
+scales:{
+y:{
+beginAtZero:true,
+grid:{
+color:"#e5e7eb"
+},
+ticks:{
+color:"#374151"
+}
+},
+x:{
+ticks:{
+color:"#374151",
+font:{
+weight:"bold"
+}
+}
+}
+}
+
+}
+
+});
+
+new Chart(document.getElementById("precisionChart"),{
+
+type:'bar',
+
+data:{
+
+labels:['Transformer','LSTM'],
+
+datasets:[{
+
+label:'Precision (%)',
+
+data:[81,74],
+
+backgroundColor:['#2563eb','#60a5fa'],
+
+borderColor:['#1d4ed8','#3b82f6'],
+
+borderWidth:2,
+
+borderRadius:8
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+legend:{
+labels:{
+color:"#1f2937",
+font:{
+size:14,
+weight:"bold"
+}
+}
+}
+},
+
+scales:{
+y:{
+beginAtZero:true,
+grid:{
+color:"#e5e7eb"
+},
+ticks:{
+color:"#374151"
+}
+},
+x:{
+ticks:{
+color:"#374151",
+font:{
+weight:"bold"
+}
+}
+}
+}
+
+}
+
+});
+new Chart(document.getElementById("recallChart"),{
+
+type:'bar',
+
+data:{
+
+labels:['Transformer','LSTM'],
+
+datasets:[{
+
+label:'Recall (%)',
+
+data:[80,73],
+
+backgroundColor:['#8b5cf6','#a78bfa'],
+
+borderColor:['#7c3aed','#8b5cf6'],
+
+borderWidth:2,
+
+borderRadius:8
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+legend:{
+labels:{
+color:"#1f2937",
+font:{
+size:14,
+weight:"bold"
+}
+}
+}
+},
+
+scales:{
+y:{
+beginAtZero:true,
+grid:{
+color:"#e5e7eb"
+},
+ticks:{
+color:"#374151"
+}
+},
+x:{
+ticks:{
+color:"#374151",
+font:{
+weight:"bold"
+}
+}
+}
+}
+
+}
+
+});
+
+new Chart(document.getElementById("f1Chart"),{
+
+type:'bar',
+
+data:{
+
+labels:['Transformer','LSTM'],
+
+datasets:[{
+
+label:'F1 Score',
+
+data:[80,73],
+
+backgroundColor:['#f59e0b','#fbbf24'],
+
+borderColor:['#d97706','#f59e0b'],
+
+borderWidth:2,
+
+borderRadius:8
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+legend:{
+labels:{
+color:"#1f2937",
+font:{
+size:14,
+weight:"bold"
+}
+}
+}
+},
+
+scales:{
+y:{
+beginAtZero:true,
+grid:{
+color:"#e5e7eb"
+},
+ticks:{
+color:"#374151"
+}
+},
+x:{
+ticks:{
+color:"#374151",
+font:{
+weight:"bold"
+}
+}
+}
+}
+
+}
+
+});
+new Chart(document.getElementById("bleuChart"),{
+
+type:'bar',
+
+data:{
+
+labels:['Transformer','LSTM'],
+
+datasets:[{
+
+label:'BLEU Score',
+
+data:[4.04,2.80],
+
+backgroundColor:['#ef4444','#f87171'],
+
+borderColor:['#dc2626','#ef4444'],
+
+borderWidth:2,
+
+borderRadius:8
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+legend:{
+labels:{
+color:"#1f2937",
+font:{
+size:14,
+weight:"bold"
+}
+}
+}
+},
+
+scales:{
+y:{
+beginAtZero:true,
+grid:{
+color:"#e5e7eb"
+},
+ticks:{
+color:"#374151"
+}
+},
+x:{
+ticks:{
+color:"#374151",
+font:{
+weight:"bold"
+}
+}
+}
+}
+
+}
+
+});
+
+new Chart(document.getElementById("radarChart"),{
+
+type:'radar',
+
+data:{
+
+labels:['Accuracy','Precision','Recall','F1','BLEU'],
+
+datasets:[
+
+{
+
+label:'Transformer',
+
+data:transformer
+
+},
+
+{
+
+label:'LSTM',
+
+data:lstm
+
+}
+
+]
+
+}
+
+});
+
+</script>
+
+{% endblock %}

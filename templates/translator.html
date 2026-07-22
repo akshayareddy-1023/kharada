@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kharada Translator</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<!-- Navbar -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🌐 Kharada Translator
+    </div>
+
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Translator</a>
+        <a href="/performance">Performance</a>
+        <a href="/about">About</a>
+    </div>
+
+</nav>
+
+
+
+<!-- Main Section -->
+
+<section class="translator-section">
+
+
+<h1>
+    AI Powered Kharada → English Translator
+</h1>
+
+
+<p class="subtitle">
+    Translate Kharada language using advanced NLP Deep Learning Models
+</p>
+
+
+
+<div class="translator-box">
+
+
+<!-- Input -->
+
+<div class="card">
+
+
+<h3>
+    📝 Enter Kharada Text
+</h3>
+
+
+<textarea 
+id="inputText"
+placeholder="Type your Kharada sentence here..."
+></textarea>
+
+
+<div class="buttons">
+
+<button onclick="clearText()" class="secondary">
+Clear
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- Output -->
+
+
+<div class="card">
+
+
+<h3>
+    🌍 English Translation
+</h3>
+
+
+<textarea 
+id="outputText"
+readonly
+placeholder="Translation will appear here..."
+>{{ translation }}</textarea>
+
+
+
+<button onclick="copyText()" class="copy">
+Copy Translation
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- Translate Button -->
+
+<button class="translate-btn" onclick="translateText()">
+
+🚀 Translate
+
+</button>
+
+
+
+
+
+<!-- Loading -->
+
+<div id="loading">
+
+🤖 Translating... Please wait
+
+</div>
+
+
+
+
+
+
+
+<!-- Model Details -->
+
+
+<div class="info-container">
+
+
+<div class="info-card">
+
+<h3>🧠 AI Model</h3>
+
+<p>
+Transformer + LSTM
+</p>
+
+</div>
+
+
+
+
+<div class="info-card">
+
+<h3>⚙ Framework</h3>
+
+<p>
+PyTorch
+</p>
+
+</div>
+
+
+
+
+<div class="info-card">
+
+<h3>📊 Accuracy</h3>
+
+<p>
+82%
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- Examples -->
+
+
+<div class="examples">
+
+
+<h2>
+Try Examples
+</h2>
+
+
+<button>
+ನಮಸ್ಕಾರ
+</button>
+
+
+<button>
+ನೀವು ಹೇಗಿದ್ದೀರಿ
+</button>
+
+
+<button>
+ನನ್ನ ಹೆಸರು
+</button>
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+<footer>
+
+© 2026 Kharada Translator | NLP Translation System
+
+</footer>
+
+
+
+
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+
+</html>

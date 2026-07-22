@@ -1,143 +1,58 @@
 {% extends "base.html" %}
 
-
-{% block title %}
-Translation History | Kharada Translator
-{% endblock %}
-
-
+{% block title %}Translation History{% endblock %}
 
 {% block content %}
 
+<div class="history-container">
 
+    <div class="history-header">
 
-<div class="container">
+        <h1>Translation History</h1>
 
-
-    <h1 style="
-    text-align:center;
-    color:#2563EB;
-    margin-top:40px;">
-
-        <i class="fa-solid fa-clock-rotate-left"></i>
-
-        Translation History
-
-    </h1>
-
-
-
-
-
-    <div class="history-card">
-
-
-
-        {% if history %}
-
-
-
-            {% for item in history %}
-
-
-
-            <div class="history-item">
-
-
-                <h3>
-                    Kharada Text
-                </h3>
-
-
-                <p>
-
-                    {{ item.input_text }}
-
-                </p>
-
-
-
-
-                <h3 style="margin-top:15px;">
-
-                    English Translation
-
-                </h3>
-
-
-
-                <p>
-
-                    {{ item.output_text }}
-
-                </p>
-
-
-
-                <small style="color:#64748B;">
-
-                    {{ item.date }}
-
-                </small>
-
-
-
-            </div>
-
-
-
-            {% endfor %}
-
-
-
-
-        {% else %}
-
-
-
-            <div style="
-            text-align:center;
-            padding:30px;">
-
-
-                <i class="fa-solid fa-folder-open"
-                style="
-                font-size:40px;
-                color:#94A3B8;">
-                </i>
-
-
-
-                <h3>
-
-                    No Translation History Found
-
-                </h3>
-
-
-
-                <p>
-
-                    Your translated texts will appear here.
-
-                </p>
-
-
-            </div>
-
-
-
-        {% endif %}
-
-
+        <input type="text"
+               id="historySearch"
+               placeholder="🔍 Search history..."
+               onkeyup="searchHistory()">
 
     </div>
 
+    <table id="historyTable">
 
+       <thead>
+    <tr>
+        <th>S.No</th>
+        <th>Kharada Text</th>
+        <th>English Translation</th>
+        <th>Model Used</th>
+        <th>Translated At</th>
+    </tr>
+</thead>
+
+  <tbody>
+
+{% for row in records %}
+
+<tr>
+
+    <td>{{ loop.index }}</td>
+
+    <td>{{ row[2] }}</td>
+
+    <td>{{ row[3] }}</td>
+
+    <td>{{ row[1] }}</td>
+
+    <td>{{ row[4] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+    </table>
 
 </div>
-
-
-
 
 {% endblock %}

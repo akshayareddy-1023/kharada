@@ -1,82 +1,107 @@
 {% extends "base.html" %}
 
-{% block title %}
-Login | Kharada Translator
-{% endblock %}
-
+{% block title %}Login | Kharada Translator{% endblock %}
 
 {% block content %}
 
+<div class="login-page">
 
-<div class="auth-container">
+    <div class="login-left">
+
+        <h1>Kharada Language Translator</h1>
+
+        <p>
+            AI Powered Translation System using
+            <b>Transformer</b> and <b>LSTM</b> Models
+        </p>
+
+        <ul class="features">
+
+            <li>✔ Secure Login</li>
+
+            <li>✔ Fast Translation</li>
+
+            <li>✔ Translation History</li>
+
+            <li>✔ Model Performance Comparison</li>
+
+            <li>✔ Interactive Charts & Analytics</li>
+
+        </ul>
+
+    </div>
 
 
-    <div class="auth-card">
+    <div class="login-card">
 
+        <div class="login-icon">
 
-        <h2>
-            <i class="fa-solid fa-user"></i>
-            Login
-        </h2>
+            <i class="fa-solid fa-language"></i>
 
+        </div>
 
+        <h2>Welcome Back</h2>
+
+        <p class="subtitle">
+
+            Login to continue
+
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+
+        {% for category,message in messages %}
+
+        <div class="flash {{category}}">
+
+            {{message}}
+
+        </div>
+
+        {% endfor %}
+
+        {% endif %}
+        {% endwith %}
 
         <form action="{{ url_for('login') }}" method="POST">
 
+            <label>Email</label>
 
-            <input 
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-            required>
-
-
-
-            <div style="position:relative;">
-
-
-                <input 
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Enter Password"
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter Email"
                 required>
 
+            <label>Password</label>
 
+            <div class="password-box">
 
-                <i 
-                class="fa-solid fa-eye"
-                id="eye"
-                onclick="togglePassword()"
-                style="
-                position:absolute;
-                right:15px;
-                top:15px;
-                cursor:pointer;
-                color:#64748B;">
-                </i>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required>
 
+                <span onclick="togglePassword('password')">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                </span>
 
             </div>
 
-
-
-
-            <button 
-            type="submit"
-            class="auth-btn">
+            <button type="submit">
 
                 Login
 
             </button>
 
-
-
         </form>
 
-
-
-        <p style="text-align:center;margin-top:20px;">
+        <div class="bottom-text">
 
             Don't have an account?
 
@@ -86,14 +111,10 @@ Login | Kharada Translator
 
             </a>
 
-        </p>
-
-
+        </div>
 
     </div>
 
-
 </div>
-
 
 {% endblock %}

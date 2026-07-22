@@ -1,124 +1,109 @@
 {% extends "base.html" %}
 
-
-{% block title %}
-Register | Kharada Translator
-{% endblock %}
-
-
+{% block title %}Register | Kharada Translator{% endblock %}
 
 {% block content %}
 
+<div class="login-page">
 
-<div class="auth-container">
+    <div class="login-left">
 
+        <h1>Create Your Account</h1>
 
-    <div class="auth-card">
+        <p>
+            Join the AI Powered Kharada Language Translation System.
+        </p>
 
+        <ul class="features">
 
-        <h2>
+            <li>✔ Secure User Authentication</li>
+            <li>✔ Translation History</li>
+            <li>✔ Transformer & LSTM Models</li>
+            <li>✔ AI Performance Dashboard</li>
+
+        </ul>
+
+    </div>
+
+    <div class="login-card">
+
+        <div class="login-icon">
 
             <i class="fa-solid fa-user-plus"></i>
 
-            Create Account
+        </div>
 
-        </h2>
+        <h2>Create Account</h2>
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category,message in messages %}
+                <div class="flash {{category}}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
 
+        <form method="POST">
 
-        <form action="{{ url_for('register') }}" method="POST">
+            <label>Username</label>
 
-
-
-            <input 
-            type="text"
-            name="username"
-            placeholder="Enter Username"
-            required>
-
-
-
-            <input 
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-            required>
-
-
-
-
-            <div style="position:relative;">
-
-
-                <input 
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Create Password"
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter Username"
                 required>
 
+            <label>Email</label>
 
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter Email"
+                required>
 
-                <i 
-                class="fa-solid fa-eye"
-                id="eye"
-                onclick="togglePassword()"
-                style="
-                position:absolute;
-                right:15px;
-                top:15px;
-                cursor:pointer;
-                color:#64748B;">
-                </i>
+            <label>Password</label>
 
+            <div class="password-box">
+
+                <input
+                    id="registerPassword"
+                    type="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required>
+
+                <span onclick="togglePassword('registerPassword')">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                </span>
 
             </div>
 
-
-
-
-
-            <button 
-            type="submit"
-            class="auth-btn">
-
+            <button type="submit">
 
                 Register
 
-
             </button>
-
-
-
 
         </form>
 
-
-
-
-
-        <p style="text-align:center;margin-top:20px;">
-
+        <div class="bottom-text">
 
             Already have an account?
 
-
-            <a href="{{ url_for('login') }}">
+            <a href="/login">
 
                 Login
 
             </a>
 
-
-        </p>
-
-
+        </div>
 
     </div>
 
-
 </div>
-
-
 
 {% endblock %}

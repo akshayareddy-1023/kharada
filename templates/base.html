@@ -7,78 +7,111 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>
-        {% block title %}
-        Kharada Translator
-        {% endblock %}
-    </title>
+    <title>{% block title %}Kharada Translator{% endblock %}</title>
 
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 
-    <!-- Google Font -->
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-
-    <!-- Font Awesome Icons -->
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-
-    <!-- CSS -->
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          rel="stylesheet">
 
 </head>
 
-
 <body>
 
+<!-- NAVBAR -->
 
-<!-- ================= NAVBAR ================= -->
-
-
-<nav>
-
+<nav class="navbar">
 
     <div class="logo">
 
         <i class="fa-solid fa-language"></i>
 
-        Kharada Translator
+        KHARADA TRANSLATOR
 
     </div>
 
+    {% if session.get("user") %}
 
     <ul>
 
         <li>
-            <a href="{{ url_for('home') }}">
-                Home
+
+            <a href="/dashboard">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
             </a>
+
         </li>
 
-
         <li>
-            <a href="{{ url_for('about') }}">
-                About
+
+            <a href="/translator">
+
+                <i class="fa-solid fa-language"></i>
+
+                Translator
+
             </a>
+
         </li>
 
-
-        {% if session.get('user') %}
-
-
         <li>
-            <a href="{{ url_for('history') }}">
+
+            <a href="/history">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
                 History
-            </a>
-        </li>
 
+            </a>
+
+        </li>
 
         <li>
 
-            <a href="{{ url_for('logout') }}" class="logout-btn">
+            <a href="/performance">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                Performance
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="/profile">
+
+                <i class="fa-solid fa-user"></i>
+
+                Profile
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="/about">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                About
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="/logout">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
 
                 Logout
 
@@ -86,96 +119,22 @@
 
         </li>
 
-
-        {% else %}
-
-
-        <li>
-            <a href="{{ url_for('login') }}">
-                Login
-            </a>
-        </li>
-
-
-        <li>
-            <a href="{{ url_for('register') }}">
-                Register
-            </a>
-        </li>
-
-
-        {% endif %}
-
-
     </ul>
 
+    {% endif %}
 
 </nav>
 
 
-
-<!-- ================= FLASH MESSAGES ================= -->
-
-
-{% with messages = get_flashed_messages() %}
-
-{% if messages %}
-
-{% for message in messages %}
-
-
-<div class="alert">
-
-    {{ message }}
-
-</div>
-
-
-{% endfor %}
-
-{% endif %}
-
-{% endwith %}
-
-
-
-
-
-<!-- ================= PAGE CONTENT ================= -->
-
+<div class="page">
 
 {% block content %}
 
-
 {% endblock %}
 
-
-
-
-
-<!-- ================= FOOTER ================= -->
-
-
-<footer class="footer">
-
-
-    <p>
-
-        © 2026 Kharada Translator | AI Based Language Translation System
-
-    </p>
-
-
-</footer>
-
-
-
-
-
-<!-- JavaScript -->
+</div>
 
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-
 
 </body>
 

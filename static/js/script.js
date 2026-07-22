@@ -1,183 +1,297 @@
-// ================= PASSWORD TOGGLE =================
+// Translate Button Function
 
-function togglePassword() {
+function translateText(){
 
-    const password = document.getElementById("password");
-    const eye = document.getElementById("eye");
+    let input = document.getElementById("inputText").value;
 
-    if (password.type === "password") {
+    let output = document.getElementById("outputText");
 
-        password.type = "text";
-        eye.classList.remove("fa-eye");
-        eye.classList.add("fa-eye-slash");
+    let loading = document.getElementById("loading");
 
-    } else {
 
-        password.type = "password";
-        eye.classList.remove("fa-eye-slash");
-        eye.classList.add("fa-eye");
+    if(input.trim()==""){
+
+        alert("Please enter text");
+
+        return;
 
     }
 
-}
 
-// ================= CHARACTER COUNTER =================
+    loading.style.display="block";
 
-const input = document.getElementById("inputText");
+    output.value="";
 
-if (input) {
 
-    input.addEventListener("input", function () {
+    fetch("/translate",{
 
-        document.getElementById("charCount").innerHTML =
-            input.value.length + " / 1000";
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            text:input
+
+        })
+
+    })
+
+
+    .then(response=>response.json())
+
+
+    .then(data=>{
+
+        loading.style.display="none";
+
+        output.value=data.translation;
+
+    })
+
+
+    .catch(error=>{
+
+        loading.style.display="none";
+
+        console.log(error);
+
+        output.value="Error occurred";
 
     });
 
-}
-
-// ================= CLEAR =================
-
-function clearInput() {
-
-    if(document.getElementById("inputText")){
-
-        document.getElementById("inputText").value = "";
-
-        document.getElementById("charCount").innerHTML = "0 / 1000";
-
-    }
-
-    if(document.getElementById("outputText")){
-
-        document.getElementById("outputText").value = "";
-
-    }
 
 }
 
-// ================= COPY =================
+
+
+
+// Clear Input Text
+
+function clearText(){
+
+    document.getElementById("inputText").value = "";
+
+    document.getElementById("outputText").value = "";
+
+}
+
+
+
+
+
+
+// Copy Translation
 
 function copyText(){
 
-    const output=document.getElementById("outputText");
+    let output = document.getElementById("outputText");
 
-    output.select();
 
-    output.setSelectionRange(0,99999);
+    if(output.value.trim() === ""){
 
-    navigator.clipboard.writeText(output.value);
+        alert("No translation available!");
 
-    alert("Translation Copied Successfully");
-
-}
-
-// ================= LOADING =================
-
-const form=document.querySelector("form");
-
-if(form){
-
-form.addEventListener("submit",function(){
-
-const btn=document.querySelector(".translate-btn");
-
-if(btn){
-
-btn.innerHTML="<i class='fa fa-spinner fa-spin'></i> Translating...";
-
-btn.disabled=true;
-
-}
-
-});
-
-}
-
-// ================= DARK MODE =================
-
-const darkBtn=document.getElementById("darkMode");
-
-if(darkBtn){
-
-darkBtn.addEventListener("click",()=>{
-
-document.body.classList.toggle("dark");
-
-});
-
-}
-
-// ================= SCROLL ANIMATION =================
-
-const cards=document.querySelectorAll(".feature-card");
-
-window.addEventListener("scroll",()=>{
-
-cards.forEach(card=>{
-
-const top=card.getBoundingClientRect().top;
-
-if(top<window.innerHeight-100){
-
-card.classList.add("show");
-
-}
-
-});
-
-});
-// ================= SWAP LANGUAGE =================
-
-function swapLanguage(){
-
-    const source = document.getElementById("sourceLang");
-    const target = document.getElementById("targetLang");
-
-    if(source && target){
-
-        let temp = source.value;
-
-        source.value = target.value;
-
-        target.value = temp;
+        return;
 
     }
 
+
+    navigator.clipboard.writeText(output.value);
+
+
+    alert("Translation copied!");
+
 }
 
 
-// ================= VOICE INPUT =================
-
-function startListening(){
-
-    if('webkitSpeechRecognition' in window){
-
-        const recognition = new webkitSpeechRecognition();
-
-        recognition.lang="kn-IN";
-
-        recognition.start();
 
 
-        recognition.onresult=function(event){
-
-            document.getElementById("inputText").value =
-            event.results[0][0].transcript;
 
 
-            document.getElementById("charCount").innerHTML =
-            document.getElementById("inputText").value.length + " / 1000";
 
-        };
+// Example Sentence Buttons
 
+let examples = document.querySelectorAll(".examples button");
+
+
+examples.forEach(function(button){
+
+
+    button.addEventListener("click",function(){
+
+
+        document.getElementById("inputText").value = this.innerText;
+
+
+    });
+
+
+});
+// ======================================
+// Show / Hide Password
+// ======================================
+
+function togglePassword(id){
+
+    let password = document.getElementById(id);
+
+    if(password.type==="password"){
+
+        password.type="text";
 
     }
 
     else{
 
-        alert("Voice input is not supported");
+        password.type="password";
 
     }
 
 }
+
+
+
+// ======================================
+// Character Counter
+// ======================================
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    let input=document.getElementById("inputText");
+
+    let counter=document.getElementById("charCount");
+
+    if(input && counter){
+
+        input.addEventListener("input",function(){
+
+            counter.innerHTML=this.value.length+" Characters";
+
+        });
+
+    }
+
+});
+
+
+
+
+// ======================================
+// Download Translation
+// ======================================
+
+function downloadTranslation(){
+
+    let output=document.getElementById("outputText").value;
+
+    if(output==""){
+
+        alert("No translation available!");
+
+        return;
+
+    }
+
+    let blob=new Blob([output],{type:"text/plain"});
+
+    let link=document.createElement("a");
+
+    link.href=URL.createObjectURL(blob);
+
+    link.download="translation.txt";
+
+    link.click();
+
+}
+
+
+
+
+// ======================================
+// Loading Animation
+// ======================================
+
+function showLoader(){
+
+    let loader=document.getElementById("loading");
+
+    if(loader){
+
+        loader.style.display="block";
+
+    }
+
+}
+
+function hideLoader(){
+
+    let loader=document.getElementById("loading");
+
+    if(loader){
+
+        loader.style.display="none";
+
+    }
+
+}
+// ===============================
+// Search Translation History
+// ===============================
+
+function searchHistory(){
+
+    let input=document.getElementById("historySearch");
+
+    if(!input) return;
+
+    let filter=input.value.toUpperCase();
+
+    let table=document.getElementById("historyTable");
+
+    let tr=table.getElementsByTagName("tr");
+
+    for(let i=1;i<tr.length;i++){
+
+        let td=tr[i].getElementsByTagName("td");
+
+        let found=false;
+
+        for(let j=0;j<td.length;j++){
+
+            if(td[j].innerHTML.toUpperCase().indexOf(filter)>-1){
+
+                found=true;
+
+            }
+
+        }
+
+        tr[i].style.display=found?"":"none";
+
+    }
+
+}
+// Character Counter
+
+document.addEventListener("DOMContentLoaded",function(){
+
+let input=document.getElementById("inputText");
+
+let counter=document.getElementById("charCount");
+
+if(input && counter){
+
+counter.innerHTML=input.value.length+" Characters";
+
+input.addEventListener("input",function(){
+
+counter.innerHTML=this.value.length+" Characters";
+
+});
+
+}
+
+});
